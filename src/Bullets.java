@@ -1,4 +1,4 @@
-//(c) A+ Computer Science
+ //(c) A+ Computer Science
 //www.apluscompsci.com
 //Name -
 
@@ -15,23 +15,34 @@ public class Bullets {
     private List<Ammo> ammo;
 
     public Bullets() {
+        ammo = new ArrayList<Ammo>();
     }
 
     public void add(Ammo al) {
+        ammo.add(al);
     }
 
     //post - draw each Ammo
     public void drawEmAll(Graphics window) {
+        for (Ammo al : ammo){
+            al.draw(window);
+        }
     }
 
     public void moveEmAll() {
+        for (Ammo al : ammo){
+            al.move("SPACE");
+        }
     }
 
     public void cleanEmUp() {
+        for (Ammo al : ammo){
+            
+        }
     }
 
     public List<Ammo> getList() {
-        return null;
+        return ammo;
     }
 
     public String toString() {
