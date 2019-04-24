@@ -19,7 +19,7 @@ public class AlienHorde {
     }
 
     public void add(Alien al) {
-        for (int i = 0; i < aliens.size(); i++){
+        for (int i = 0; i < aliens.size() ; i++){
             aliens.add(al);
         }
     }
@@ -37,7 +37,16 @@ public class AlienHorde {
     }
 
     public void removeDeadOnes(List<Ammo> shots) {
-        
+        List <Alien> removeAl = new ArrayList<Alien>();
+        for(Ammo a : shots){
+            for (Alien al : aliens){
+                if ((a.getX() > al.getX() && a.getX() < al.getX() + al.getWidth()) 
+                        && (a.getY() < al.getY() + al.getHeight() && a.getY()> al.getY())){
+                    removeAl.add(al);
+                }
+            }
+        }
+        aliens.removeAll(removeAl);
     }
 
     public String toString() {

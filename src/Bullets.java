@@ -35,10 +35,8 @@ public class Bullets {
         }
     }
 
-    public void cleanEmUp() {
-        for (Ammo al : ammo){
-            
-        }
+    public void cleanEmUp() { 
+            ammo.clear();
     }
 
     public List<Ammo> getList() {
