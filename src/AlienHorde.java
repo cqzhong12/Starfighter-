@@ -13,15 +13,24 @@ import java.util.List;
 public class AlienHorde {
 
     private List<Alien> aliens;
+    public boolean past = false;
 
     public AlienHorde(int size) {
-        aliens = new ArrayList<Alien>(size);
+        int row = 1;
+        int xPos = 35;
+        aliens = new ArrayList<Alien>();
+        for(int i = 1; i <= size; i++){
+            add(new Alien(xPos,row * 50));
+            xPos+=100;
+            if(i%8==0&&i!=0){
+                row++;
+                xPos = 35;
+            }
+        }
     }
 
     public void add(Alien al) {
-        for (int i = 0; i < aliens.size() ; i++){
             aliens.add(al);
-        }
     }
 
     public void drawEmAll(Graphics window) {
@@ -32,8 +41,21 @@ public class AlienHorde {
 
     public void moveEmAll() {
         for (Alien al : aliens){
-            al.move("RIGHT");
+            List <Alien> removeAl1 = new ArrayList<Alien>();
+                removeAl1.add(al);
+            if (al.getY() < 600){
+            al.move("DOWN");
         }
+            else{
+                aliens.removeAll(removeAl1);
+                past = true;
+                break;
+            }
+        }
+    }
+    
+     public void remove(Alien a){
+        aliens.remove(a);
     }
 
     public void removeDeadOnes(List<Ammo> shots) {
@@ -47,6 +69,11 @@ public class AlienHorde {
             }
         }
         aliens.removeAll(removeAl);
+        
+    }
+    
+    public List<Alien> getList() {
+        return aliens;
     }
 
     public String toString() {

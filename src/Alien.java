@@ -20,13 +20,12 @@ public class Alien extends MovingThing {
 
     public Alien(int x, int y) {
         //add code here
-        super(x,y);
+        this(x, y, 30, 30, 1);
     }
 
     public Alien(int x, int y, int s) {
         //add code here
-        super(x, y);
-        speed = s;  
+        this(x, y, 30, 30, 1); 
     }
 
     public Alien(int x, int y, int w, int h, int s) {

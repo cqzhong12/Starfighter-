@@ -13,6 +13,7 @@ public class Ship extends MovingThing {
 
     private int speed;
     private Image image;
+    private boolean dead;
 
     public Ship() {
         this(10, 10, 10, 10, 10);
@@ -48,16 +49,24 @@ public class Ship extends MovingThing {
     public int getSpeed() {
         return speed;
     }
+    
+    public void setDead(boolean b) {
+        dead = b;
+    }
+
+    public boolean getDead() {
+        return dead;
+    }
 
     public void move(String direction) {
         //add code here
-        if (direction == "LEFT"){
+        if (direction == "LEFT" && getX() > 0){
             setX(getX() - getSpeed());
         }
-        if (direction == "RIGHT"){
+        if (direction == "RIGHT" && getX() < 800 - getWidth()){
             setX(getX() + getSpeed());
         }
-        if (direction == "DOWN"){
+        if (direction == "DOWN" && getY() < 550 - getHeight()){
             setY(getY() + getSpeed());
         }
         if (direction == "UP"){
@@ -66,7 +75,9 @@ public class Ship extends MovingThing {
     }
 
     public void draw(Graphics window) {
+        if (!dead){
         window.drawImage(image, getX(), getY(), getWidth(), getHeight(), null);
+        }
     }
 
     public String toString() {

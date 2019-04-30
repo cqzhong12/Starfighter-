@@ -17,16 +17,16 @@ import java.util.ArrayList;
 public class OuterSpace extends Canvas implements KeyListener, Runnable {
 
     private Ship ship;
-    private Alien alienOne;
-    private Alien alienTwo;
-    private Boolean shot = false;
-    
+    //private Alien alienOne;
+    //private Alien alienTwo;
+    private Boolean shot = true;
+    private Boolean touch = false;
+    private Boolean past = false;
+
     //uncomment once you are ready for this part
-    
     private AlienHorde horde;
     private Bullets shots;
-    
-    
+
     private boolean[] keys;
     private BufferedImage back;
 
@@ -37,13 +37,12 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable {
 
         //instantiate other instance variables
         //Ship, Alien
-        
-        ship = new Ship(100, 150 ,80 ,80, 8);
-        alienOne = new Alien(300, 50, 60, 60, 5);
-        alienTwo = new Alien(250, 50, 60, 60, 5);
+        ship = new Ship(300, 420, 80, 80, 5);
+        //alienOne = new Alien(300, 50, 60, 60, 5);
+        //alienTwo = new Alien(250, 50, 60, 60, 5);
         shots = new Bullets();
-        horde = new AlienHorde(5);
-        
+        horde = new AlienHorde(8);
+
         this.addKeyListener(this);
         new Thread(this).start();
 
@@ -85,25 +84,68 @@ public class OuterSpace extends Canvas implements KeyListener, Runnable {
         if (keys[3] == true) {
             ship.move("DOWN");
         }
-        if (keys[4] == true && shot == true){
-            shots.add(new Ammo(ship.getX() + ship.getWidth()/2, ship.getY(), 3 ));
-            shot = false; 
+        if (keys[4] == true && shot == true) {
+            shots.add(new Ammo(ship.getX() + ship.getWidth() / 2, ship.getY(), 3));
+            shot = false;
         }
-        
+
         shots.drawEmAll(graphToBack);
         shots.moveEmAll();
-        ship.draw(graphToBack); 
-        alienOne.draw(graphToBack);
-        alienTwo.draw(graphToBack);
-        horde.drawEmAll (graphToBack);
-        
-		//add code to move Ship, Alien, etc.
+        ship.draw(graphToBack);
+        //alienOne.draw(graphToBack);
+        //alienTwo.draw(graphToBack);
+        horde.drawEmAll(graphToBack);
+
+        //add code to move Ship, Alien, etc.
         horde.moveEmAll();
         //add in collision detection to see if Bullets hit the Aliens and if Bullets hit the Ship
-        
+
         horde.removeDeadOnes(shots.getList());
+        ship.setDead(false);
+
+        for (Alien al : horde.getList()) {
+            if ((al.getX() > ship.getX()
+                    && al.getX() < ship.getX() + ship.getWidth())
+                    && (al.getY() < ship.getY() + ship.getHeight()
+                    && al.getY() > ship.getY())) {
+                touch = true;
+                break;
+            }
+        }
+
+        for (Alien al : horde.getList()) {
+            if (al.getY() > 580) {
+                horde.getList().clear();
+                past = true;
+                break;
+            }
+        }
+
+        if (horde.getList().isEmpty()) {
+            graphToBack.setColor(Color.BLACK);
+            graphToBack.fillRect(0, 0, 800, 600);
+            graphToBack.setColor(Color.RED);
+            if (past == true) {
+                graphToBack.drawString("YOU LOSE ", 350, 300);
+                horde.getList().clear();
+            } else {
+                graphToBack.drawString("YOU WIN! ", 350, 300);
+                ship.setDead(true);
+            }
+        }
+
+        if (touch == true) {
+            horde.getList().clear();
+            graphToBack.setColor(Color.BLACK);
+            graphToBack.fillRect(0, 0, 800, 600);
+            graphToBack.setColor(Color.RED);
+            graphToBack.drawString("YOU LOSE ", 350, 300);
+            ship.setDead(true);
+
+        }
+
         twoDGraph.drawImage(back, null, 0, 0);
-        
+
     }
 
     public void keyPressed(KeyEvent e) {
